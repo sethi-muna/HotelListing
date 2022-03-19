@@ -50,6 +50,7 @@ namespace HotelListingApp
 
             app.UseHttpsRedirection();
 
+            //cors added
             app.UseCors("CorsPolicy");
 
             app.UseRouting();
