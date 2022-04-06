@@ -1,7 +1,10 @@
+using HotelListingApp.Configuration;
+using HotelListingApp.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,12 +29,13 @@ namespace HotelListingApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("sqlConnection")));
             services.AddControllers();
             services.AddCors(o =>
             {
                 o.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyHeader());
             });
+            services.AddAutoMapper(typeof(MapperInitializer));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HotelListingApp", Version = "v1" });
